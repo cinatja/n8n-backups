@@ -1089,8 +1089,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -2900,
-        740
+        -2920,
+        760
       ],
       "id": "2a931359-3449-4880-8401-add5f7eac52b",
       "name": "Google Gemini Chat Model",
@@ -1204,11 +1204,11 @@
   },
   "staticData": {
     "node:File Uploaded": {
-      "webhookId": "3778372785"
+      "webhookId": "3778509037"
     }
   },
   "tags": [],
   "triggerCount": 3,
-  "updatedAt": "2025-03-20T20:38:53.954Z",
-  "versionId": "e1b8c8c0-bc6f-4c4f-bd8a-337c817fc342"
+  "updatedAt": "2025-03-20T21:52:12.918Z",
+  "versionId": "a63579a4-3c1f-4845-8db3-de87e9a25d3e"
 }
