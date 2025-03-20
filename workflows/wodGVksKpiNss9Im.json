@@ -1,0 +1,223 @@
+{
+  "active": false,
+  "connections": {
+    "Google Generative AI": {
+      "main": [
+        []
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Google Generative AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-20T09:40:44.637Z",
+  "id": "wodGVksKpiNss9Im",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Gemini Test",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gemini-2.0-flash-lite",
+        "inputType": "messages",
+        "messages": {
+          "messagesUi": [
+            {
+              "role": "system",
+              "systemContent": "You are a helpful pdf text parser assistant."
+            },
+            {
+              "contentType": "file",
+              "content": "Parse all available text including handwritten and tables. Format it in Markdown for easier readability. Return only the markdown with no additional messaging, no formatting marks like backticks and all fields are read including their values, and titles and subtitles are read clearly."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-vercel-ai-sdk.googleGenerativeAi",
+      "typeVersion": 1,
+      "position": [
+        440,
+        160
+      ],
+      "id": "b250771e-ac21-4233-ac86-b663a554ec69",
+      "name": "Google Generative AI",
+      "credentials": {
+        "googleGenerativeAIApi": {
+          "id": "YVVezOc0VfX3bEhY",
+          "name": "Google Generative AI account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        60
+      ],
+      "id": "b3808398-35ab-46c5-978d-702cf7efacad",
+      "name": "When clicking ‘Test workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "command": "find /home/node/uploads -type f -name \"*.pdf\""
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        60
+      ],
+      "id": "65b91f51-c00e-4ba1-bd60-b1723e5a2f2a",
+      "name": "Execute Command",
+      "alwaysOutputData": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst newItems = []\n\nfor (const item of $input.all()) {\n  const stdoutItems = item.json.stdout.split('\\n')\n  for(const stdoutItem of stdoutItems){\n    newItems.push({\n      json: {\n        pdfPath: stdoutItem\n      }\n    })\n  }\n}\n\n\n\nreturn newItems.slice(0, 1);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        60
+      ],
+      "id": "83ae2f4c-89ac-4ecc-b3dc-69e8193be9e2",
+      "name": "Code2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $json.pdfPath }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        220,
+        160
+      ],
+      "id": "d5c57614-f28b-478d-9fcf-32839486681c",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "pdfPath"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -220,
+        260
+      ],
+      "id": "c6a1e3d2-811f-4dba-a3ec-db6ae7d57106",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e2cfcc5d-952e-4e88-8f37-6daa06d2ed8f",
+              "name": "pdfPath",
+              "value": "=/home/node/uploads{{ $json.pdfPath }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        260
+      ],
+      "id": "fadc9495-d40a-478f-9afb-2e0664180e0f",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2025-03-20T17:09:33.685Z",
+  "versionId": "081a20bd-8adf-4529-bd67-b61347bac2ef"
+}
