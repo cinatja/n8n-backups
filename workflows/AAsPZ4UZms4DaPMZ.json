@@ -1,0 +1,744 @@
+{
+  "active": true,
+  "connections": {
+    "Google Generative AI": {
+      "main": [
+        [
+          {
+            "node": "Cleanup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "PDF_METADATA",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Generative AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Add to Pinecone vector store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If empty": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF_METADATA": {
+      "main": [
+        [
+          {
+            "node": "Enhancer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "If empty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enhancer": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Add to Pinecone vector store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader2",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader2": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-20T17:22:40.303Z",
+  "id": "AAsPZ4UZms4DaPMZ",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Gemini Test Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gemini-2.0-flash-lite",
+        "inputType": "messages",
+        "messages": {
+          "messagesUi": [
+            {
+              "role": "system",
+              "systemContent": "You are a helpful pdf text parser assistant."
+            },
+            {
+              "contentType": "file",
+              "content": "Parse all available text including handwritten and tables. Format it in Markdown for easier readability. Return only the markdown with no additional messaging, no formatting marks like backticks and all fields are read including their values, and titles and subtitles are read clearly."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-vercel-ai-sdk.googleGenerativeAi",
+      "typeVersion": 1,
+      "position": [
+        460,
+        260
+      ],
+      "id": "e13f03ed-fb7b-459d-aab7-21ee3894f1fc",
+      "name": "Google Generative AI",
+      "credentials": {
+        "googleGenerativeAIApi": {
+          "id": "YVVezOc0VfX3bEhY",
+          "name": "Google Generative AI account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        60
+      ],
+      "id": "e0d82540-4181-4b4c-99d9-78ec5077b00a",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "command": "find /home/node/uploads -type f -name \"*.pdf\""
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        60
+      ],
+      "id": "e3114335-7eac-48ca-b77c-32cd84551598",
+      "name": "Execute Command",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst newItems = []\n\nfor (const item of $input.all()) {\n  const stdoutItems = item.json.stdout.split('\\n')\n  for(const stdoutItem of stdoutItems){\n    newItems.push({\n      json: {\n        pdfPath: stdoutItem\n      }\n    })\n  }\n}\n\n\n\nreturn newItems.slice(0, 1);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        60
+      ],
+      "id": "22a2547d-6998-4718-b694-105b0ecf4f28",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $json.pdfPath }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        220,
+        160
+      ],
+      "id": "8aef75a1-fdaf-435f-98cf-2e2c0e81c302",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e2cfcc5d-952e-4e88-8f37-6daa06d2ed8f",
+              "name": "pdfPath",
+              "value": "=/home/node/uploads{{ $json.body.pdfPath }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        280
+      ],
+      "id": "caa5ef2b-d65a-4dc7-8a29-53507bf85ce2",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d83c4c79-6d1c-471d-99b1-a95f6b3dcd0e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -340,
+        280
+      ],
+      "id": "24750ea1-e2bd-4d77-bb24-4d015404779a",
+      "name": "Webhook",
+      "webhookId": "d83c4c79-6d1c-471d-99b1-a95f6b3dcd0e"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Add a new field called 'myNewField' to the JSON of the item\n$input.item.json.text = $input.item.json.text.replaceAll(/\\`/gim, '').replace('markdown\\n', '')\n$input.item.json.file_id = $('Webhook').item.json.body.file_id\n$input.item.json.file_location = $('Webhook').item.json.body.file_location\n$input.item.json.file_title = $('Webhook').item.json.body.file_title\n\n\n\nreturn $input.item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        260
+      ],
+      "id": "b8ea5cb9-8121-4da5-b717-20e089df86e6",
+      "name": "Cleanup"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1daa155-4331-40dc-81d9-0a9db3f7d816",
+              "leftValue": "={{ $json.text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1380,
+        100
+      ],
+      "id": "cfc3bf99-c00f-45cf-8b12-0a65351d4cac",
+      "name": "If empty"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data || $json.text || $json.concatenated_data }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "=file_id",
+                "value": "={{ $json.file_id }}"
+              },
+              {
+                "name": "file_title",
+                "value": "={{ $json.file_title }}"
+              },
+              {
+                "name": "file_location",
+                "value": "={{ $json.file_location?.replace('/home/node/uploads', '') }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "61462614-6a89-4c89-b85b-d0e9d7eec420",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2140,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-large",
+        "options": {}
+      },
+      "id": "6dd48a4a-22c7-4e90-931a-813ebb328bc3",
+      "name": "Embeddings OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        2120,
+        840
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "mqLNPFYe19mxJMf7",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chunkSize": 400
+      },
+      "id": "4cfaeadd-cba3-47a4-802a-648e8dd77956",
+      "name": "Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/text-embedding-004"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2220,
+        740
+      ],
+      "id": "f3566c4b-ad37-4c7d-b9f2-4cb67d96141b",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "fQaEq93BMt8jzq54",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {
+          "keepSource": "both"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        580,
+        0
+      ],
+      "id": "1e153874-becd-441c-9b82-461ec0e74823",
+      "name": "PDF_METADATA"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "advanced": true,
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "fileName",
+              "field2": "fileName"
+            }
+          ]
+        },
+        "options": {
+          "clashHandling": {
+            "values": {
+              "resolveClash": "preferInput1",
+              "mergeMode": "shallowMerge",
+              "overrideEmpty": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1160,
+        100
+      ],
+      "id": "9a730f53-bf4d-45f3-b7e1-875312f3a0ee",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4283755-e6e5-4ff9-b4d1-03c10ae0ff6b",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "00c97c12-e141-4e54-87d6-a2316f8a8aa2",
+              "name": "fileName",
+              "value": "={{ $('Read/Write Files from Disk').item.json.fileName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        820,
+        260
+      ],
+      "id": "173c1efc-9a9b-421c-8ed1-aa6a6ad5fefe",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "$input.item.json.file_id = $('Webhook').item.json.body.file_id\n$input.item.json.file_location = $('Webhook').item.json.body.file_location\n$input.item.json.file_title = $('Webhook').item.json.body.file_title\ndelete $input.item.json.text\n\nreturn $input.item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        0
+      ],
+      "id": "3bba1160-be16-423a-97c4-0f08c35bfd1b",
+      "name": "Enhancer"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "53663077-ea5b-4e89-9fd3-f299a0f3b0dc",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        1960,
+        160
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "mqLNPFYe19mxJMf7",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "mode": "list",
+          "value": "test-index",
+          "cachedResultName": "test-index"
+        },
+        "options": {}
+      },
+      "id": "9475f5f0-0ada-4b4b-bc71-938f59c4c00f",
+      "name": "Add to Pinecone vector store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "position": [
+        2080,
+        -100
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "pineconeApi": {
+          "id": "tPZ9Uok943jyHg3a",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "f3d724db-4912-48fb-9da9-21434ee454d2",
+      "name": "Insert into Supabase Vectorstore",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        2340,
+        480
+      ],
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "xCjF9aHyU6xc11Wz",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data || $json.text || $json.concatenated_data }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "=file_id",
+                "value": "={{ $json.file_id }}"
+              },
+              {
+                "name": "file_title",
+                "value": "={{ $json.file_title }}"
+              },
+              {
+                "name": "file_location",
+                "value": "={{ $json.file_location?.replace('/home/node/uploads', '') }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "16c15873-772b-4f51-8bec-f2a7815ec0ef",
+      "name": "Default Data Loader2",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2460,
+        760
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 400
+      },
+      "id": "88565a20-3216-4d7e-9625-a3f547037004",
+      "name": "Character Text Splitter1",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2560,
+        920
+      ]
+    }
+  ],
+  "pinData": {
+    "When clicking ‘Test workflow’": [
+      {
+        "json": {}
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "connection": "Keep-Alive",
+            "host": "politech.hoisted.in",
+            "x-forwarded-scheme": "http",
+            "x-forwarded-proto": "http",
+            "x-forwarded-for": "158.62.0.132, 162.158.108.80",
+            "x-real-ip": "162.158.108.80",
+            "content-length": "347",
+            "cf-ray": "9237766f5d3ffd3a-SIN",
+            "cf-ipcountry": "PH",
+            "accept-encoding": "gzip, br",
+            "user-agent": "axios/1.7.4",
+            "content-type": "application/json",
+            "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-connecting-ip": "158.62.0.132",
+            "cdn-loop": "cloudflare; loops=1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "pdfPath": "/All Files/Cortland Champions Gate exports/Subcontracts/101/SignedDocument8932885287418021535.pdf",
+            "file_id": "56ed20a4-1a30-4d1a-861b-cc67b9c14ff9",
+            "file_title": "SignedDocument8932885287418021535.pdf",
+            "file_location": "/home/node/uploads/All Files/Cortland Champions Gate exports/Subcontracts/101/SignedDocument8932885287418021535.pdf"
+          },
+          "webhookUrl": "https://politech.hoisted.in/webhook/d83c4c79-6d1c-471d-99b1-a95f6b3dcd0e",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-03-20T19:13:24.929Z",
+  "versionId": "49d9c43e-2236-4ae3-8e21-47cd382f832e"
+}
