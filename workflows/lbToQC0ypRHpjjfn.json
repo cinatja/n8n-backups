@@ -203,11 +203,6 @@
         ]
       ]
     },
-    "Groq Chat Model": {
-      "ai_languageModel": [
-        []
-      ]
-    },
     "Chat Memory": {
       "ai_memory": [
         [
@@ -290,11 +285,6 @@
         ]
       ]
     },
-    "Google Gemini Chat Model": {
-      "ai_languageModel": [
-        []
-      ]
-    },
     "List Documents By Location": {
       "ai_tool": [
         [
@@ -334,7 +324,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
-        -3140,
+        -3020,
         760
       ],
       "credentials": {
@@ -458,7 +448,7 @@
         "promptType": "define",
         "text": "={{ $json.chatInput }}",
         "options": {
-          "systemMessage": "You are a personal assistant who helps answer questions from a corpus of documents. The documents are either text based (Txt, docs, extracted PDFs, etc.) or tabular data (CSVs or Excel documents).\n\nYou are given tools to perform RAG in the 'documents' table, look up the documents available in your knowledge base in the 'document_metadata' table, extract all the text from a given document, and query the tabular files with SQL in the 'document_rows' table.\n\nAlways start by performing RAG unless the question requires a SQL query for tabular data (fetching a sum, finding a max, something a RAG lookup would be unreliable for). If RAG doesn't help, then look at the documents that are available to you, find a few that you think would contain the answer, and then analyze those.\n\nAlways tell the user if you didn't find the answer. Don't make something up just to please them.\n\nIntructions:\nTo get associated rfi, the pay app should cover a date range. You have to find an rfi from that date range and read through the rfi to find the changes that they are trying to charge for in the change order\n"
+          "systemMessage": "You are a personal assistant who helps answer questions from a corpus of documents. The documents are either text based (Txt, docs, extracted PDFs, etc.) or tabular data (CSVs or Excel documents).\n\nYou are given tools to perform RAG in the 'documents' table, look up the documents available in your knowledge base in the 'document_metadata' table, extract all the text from a given document, and query the tabular files with SQL in the 'document_rows' table.\n\nAlways start by performing RAG unless the question requires a SQL query for tabular data (fetching a sum, finding a max, something a RAG lookup would be unreliable for). If RAG doesn't help, then look at the documents that are available to you, find a few that you think would contain the answer, and then analyze those.\n\nAlways tell the user if you didn't find the answer. Don't make something up just to please them.\n\nIntructions:\n- To get associated rfi, the pay app should cover a date range. You have to find an rfi from that date range and read through the rfi to find the changes that they are trying to charge for in the change order"
         }
       },
       "id": "354cfaf2-49b4-4e20-b5af-b56faeb9e20e",
@@ -874,26 +864,6 @@
       }
     },
     {
-      "parameters": {
-        "model": "qwen-2.5-32b",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
-      "typeVersion": 1,
-      "position": [
-        -3300,
-        760
-      ],
-      "id": "bc57de9d-339b-4c5d-aeef-8303c5b28793",
-      "name": "Groq Chat Model",
-      "credentials": {
-        "groqApi": {
-          "id": "dsn5Vp3ypaNyULhA",
-          "name": "Groq account"
-        }
-      }
-    },
-    {
       "parameters": {},
       "id": "ab8d6991-1d8e-4e52-a7f4-721db5a5d0f1",
       "name": "Chat Memory",
@@ -934,7 +904,7 @@
     },
     {
       "parameters": {
-        "command": "find \"/home/node/uploads/All Files/Cortland Champions Gate exports/RFI\" -type f -name \"*.pdf\""
+        "command": "find /home/node/uploads -type f -name \"*.pdf\""
       },
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
@@ -948,7 +918,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst newItems = []\n\nfor (const item of $input.all()) {\n  const stdoutItems = item.json.stdout.split('\\n')\n  for(const stdoutItem of stdoutItems){\n    const name = stdoutItem.split('/')[stdoutItem.split('/').length -1]\n    newItems.push({\n      json: {\n        pdfPath: stdoutItem,\n        name,\n        source: {\n          name\n        }\n      }\n    })\n  }\n}\n\n\n\nreturn newItems"
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst newItems = []\n\nfor (const item of $input.all()) {\n  const stdoutItems = item.json.stdout.split('\\n')\n  for(const stdoutItem of stdoutItems){\n    const name = stdoutItem.split('/')[stdoutItem.split('/').length -1]\n    newItems.push({\n      json: {\n        pdfPath: stdoutItem,\n        name,\n        source: {\n          name\n        }\n      }\n    })\n  }\n}\n\n\n\nreturn newItems.slice(103)"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1083,26 +1053,6 @@
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.0-flash",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -2920,
-        760
-      ],
-      "id": "2a931359-3449-4880-8401-add5f7eac52b",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "fQaEq93BMt8jzq54",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "descriptionType": "manual",
         "toolDescription": "Use this tool to fetch all available documents when a location is specified",
         "operation": "executeQuery",
@@ -1204,11 +1154,11 @@
   },
   "staticData": {
     "node:File Uploaded": {
-      "webhookId": "3782338857"
+      "webhookId": "3782485794"
     }
   },
   "tags": [],
   "triggerCount": 3,
-  "updatedAt": "2025-03-21T14:33:42.924Z",
-  "versionId": "89516939-35c3-454c-bd31-00f6bac5030f"
+  "updatedAt": "2025-03-21T15:08:43.724Z",
+  "versionId": "07c70494-4874-4a59-a66e-957644b64421"
 }
