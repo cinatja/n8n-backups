@@ -934,7 +934,7 @@
     },
     {
       "parameters": {
-        "command": "find /home/node/uploads -type f -name \"*.pdf\""
+        "command": "find \"/home/node/uploads/All Files/Cortland Champions Gate exports/RFI\" -type f -name \"*.pdf\""
       },
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
@@ -1204,11 +1204,11 @@
   },
   "staticData": {
     "node:File Uploaded": {
-      "webhookId": "3778509037"
+      "webhookId": "3781892403"
     }
   },
   "tags": [],
   "triggerCount": 3,
-  "updatedAt": "2025-03-20T21:52:12.918Z",
-  "versionId": "a63579a4-3c1f-4845-8db3-de87e9a25d3e"
+  "updatedAt": "2025-03-21T10:10:07.586Z",
+  "versionId": "ef00e290-f0b8-48d5-aafb-f38622c037ee"
 }
