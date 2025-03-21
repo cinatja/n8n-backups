@@ -948,7 +948,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst newItems = []\n\nfor (const item of $input.all()) {\n  const stdoutItems = item.json.stdout.split('\\n')\n  for(const stdoutItem of stdoutItems){\n    const name = stdoutItem.split('/')[stdoutItem.split('/').length -1]\n    newItems.push({\n      json: {\n        pdfPath: stdoutItem,\n        name,\n        source: {\n          name\n        }\n      }\n    })\n  }\n}\n\n\n\nreturn newItems.slice(103)"
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst newItems = []\n\nfor (const item of $input.all()) {\n  const stdoutItems = item.json.stdout.split('\\n')\n  for(const stdoutItem of stdoutItems){\n    const name = stdoutItem.split('/')[stdoutItem.split('/').length -1]\n    newItems.push({\n      json: {\n        pdfPath: stdoutItem,\n        name,\n        source: {\n          name\n        }\n      }\n    })\n  }\n}\n\n\n\nreturn newItems"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1204,11 +1204,11 @@
   },
   "staticData": {
     "node:File Uploaded": {
-      "webhookId": "3781892403"
+      "webhookId": "3782338857"
     }
   },
   "tags": [],
   "triggerCount": 3,
-  "updatedAt": "2025-03-21T10:10:07.586Z",
-  "versionId": "ef00e290-f0b8-48d5-aafb-f38622c037ee"
+  "updatedAt": "2025-03-21T14:33:42.924Z",
+  "versionId": "89516939-35c3-454c-bd31-00f6bac5030f"
 }
